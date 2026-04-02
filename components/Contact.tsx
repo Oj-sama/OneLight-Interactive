@@ -59,10 +59,17 @@ export default function Contact() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          message: form.message.trim(),
+        }),
       });
 
-      const data = (await response.json()) as { ok?: boolean; error?: string };
+      const data = (await response.json()) as {
+        success?: boolean;
+        error?: string;
+      };
 
       if (!response.ok) {
         setError(data.error || "Failed to send your message.");
@@ -71,7 +78,8 @@ export default function Contact() {
 
       setSuccess("Your message has been sent successfully.");
       setForm(initialState);
-    } catch {
+    } catch (err) {
+      console.error("CONTACT FORM ERROR:", err);
       setError("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
@@ -114,6 +122,7 @@ export default function Contact() {
               </label>
               <input
                 type="text"
+                required
                 placeholder="Your name"
                 value={form.name}
                 onChange={(e) =>
@@ -129,6 +138,7 @@ export default function Contact() {
               </label>
               <input
                 type="email"
+                required
                 placeholder="Your email"
                 value={form.email}
                 onChange={(e) =>
@@ -145,6 +155,7 @@ export default function Contact() {
             </label>
             <textarea
               rows={7}
+              required
               placeholder="Tell us about your game or idea"
               value={form.message}
               onChange={(e) =>
