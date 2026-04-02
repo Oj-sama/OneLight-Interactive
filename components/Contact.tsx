@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { FormEvent, useState } from "react";
-import emailjs from "@emailjs/browser";
 
 type FormState = {
   name: string;
@@ -18,10 +17,6 @@ const initialState: FormState = {
 
 const nameRegex = /^[A-Za-zÀ-ÿ' -]{2,80}$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const SERVICE_ID = "service_ouwm0ss";
-const TEMPLATE_ID = "template_8q62mf7";
-const PUBLIC_KEY = "yoqR6QsDo2vF7Go_U";
 
 export default function Contact() {
   const [form, setForm] = useState<FormState>(initialState);
@@ -59,24 +54,25 @@ export default function Contact() {
     try {
       setSubmitting(true);
 
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        {
-          name: form.name.trim(),
-          email: form.email.trim(),
-          message: form.message.trim(),
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        {
-          publicKey: PUBLIC_KEY,
-        }
-      );
+        body: JSON.stringify(form),
+      });
 
-      setSuccess("✅ Message sent successfully!");
+      const data = (await response.json()) as { ok?: boolean; error?: string };
+
+      if (!response.ok) {
+        setError(data.error || "Failed to send your message.");
+        return;
+      }
+
+      setSuccess("Your message has been sent successfully.");
       setForm(initialState);
-    } catch (err) {
-      console.error("EMAILJS ERROR:", err);
-      setError("❌ Failed to send message. Please try again.");
+    } catch {
+      setError("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -89,7 +85,7 @@ export default function Contact() {
       <motion.div
         initial={{ opacity: 0, y: 34 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8 }}
         className="relative z-10 mx-auto w-full max-w-[900px]"
       >
@@ -105,6 +101,10 @@ export default function Contact() {
 
         <motion.form
           onSubmit={handleSubmit}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
           className="mt-14 rounded-[28px] border border-white/10 bg-white/5 p-8 backdrop-blur-sm sm:p-10"
         >
           <div className="grid gap-5 sm:grid-cols-2">
@@ -114,12 +114,12 @@ export default function Contact() {
               </label>
               <input
                 type="text"
-                required
+                placeholder="Your name"
                 value={form.name}
                 onChange={(e) =>
                   setForm((prev) => ({ ...prev, name: e.target.value }))
                 }
-                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-white outline-none focus:border-cyan-400/40"
+                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400/40"
               />
             </div>
 
@@ -129,12 +129,12 @@ export default function Contact() {
               </label>
               <input
                 type="email"
-                required
+                placeholder="Your email"
                 value={form.email}
                 onChange={(e) =>
                   setForm((prev) => ({ ...prev, email: e.target.value }))
                 }
-                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-white outline-none focus:border-cyan-400/40"
+                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400/40"
               />
             </div>
           </div>
@@ -145,32 +145,33 @@ export default function Contact() {
             </label>
             <textarea
               rows={7}
-              required
+              placeholder="Tell us about your game or idea"
               value={form.message}
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, message: e.target.value }))
               }
-              className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-white outline-none focus:border-cyan-400/40"
+              className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400/40"
             />
           </div>
 
-          {error && (
+          {error ? (
             <p className="mt-5 text-center text-sm text-red-300">{error}</p>
-          )}
+          ) : null}
 
-          {success && (
-            <p className="mt-5 text-center text-sm text-green-300">
-              {success}
-            </p>
-          )}
+          {success ? (
+            <p className="mt-5 text-center text-sm text-cyan-300">{success}</p>
+          ) : null}
 
           <div className="mt-8 flex justify-center">
             <button
               type="submit"
               disabled={submitting}
-              className="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-10 py-3 text-xs uppercase tracking-[0.22em] text-cyan-100 transition hover:scale-[1.02] disabled:opacity-70"
+              className="group relative inline-flex min-w-[220px] items-center justify-center overflow-hidden rounded-full border border-cyan-400/40 bg-cyan-400/10 px-10 py-3 text-xs uppercase tracking-[0.22em] text-cyan-100 transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-70"
             >
-              {submitting ? "Sending..." : "Send Message"}
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-300/25 to-transparent translate-x-[-120%] transition duration-700 group-hover:translate-x-[120%]" />
+              <span className="relative z-10">
+                {submitting ? "Sending..." : "Send Message"}
+              </span>
             </button>
           </div>
         </motion.form>
