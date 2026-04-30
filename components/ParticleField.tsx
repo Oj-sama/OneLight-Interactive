@@ -47,13 +47,17 @@ export default function ParticleField() {
 
     const init = async () => {
       await app.init({
-        resizeTo: window,
+        width: window.innerWidth,
+        height: window.innerHeight,
         backgroundAlpha: 0,
         antialias: false,
         resolution: 1,
       });
 
-      if (destroyed) return;
+      if (destroyed) {
+        app.destroy(true, { children: true });
+        return;
+      }
 
       host.appendChild(app.canvas);
 
@@ -190,6 +194,9 @@ export default function ParticleField() {
       createParticles();
 
       const onResize = () => {
+        if (!destroyed && app && app.renderer) {
+          app.renderer.resize(window.innerWidth, window.innerHeight);
+        }
         swirlX = window.innerWidth / 2;
         swirlY = window.innerHeight / 2;
         swirlVX = 0;
@@ -362,7 +369,11 @@ export default function ParticleField() {
     return () => {
       destroyed = true;
       cleanup?.();
-      app.destroy(true, { children: true });
+      // If app is fully initialized and appended, we can safely destroy it now.
+      // We must check if app.renderer exists because accessing app.canvas before init finishes throws an error in Pixi v8.
+      if (app.renderer && host.contains(app.canvas)) {
+        app.destroy(true, { children: true });
+      }
     };
   }, []);
 

@@ -1,95 +1,108 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useAnimationFrame } from "framer-motion";
 import Image from "next/image";
 
 const services = [
-  {
-    title: "VR Games",
-    image: "/images/services/vr.png",
-  },
-  {
-    title: "AR Games",
-    image: "/images/services/ar.png",
-  },
-  {
-    title: "XR Games",
-    image: "/images/services/xr.png",
-  },
-  {
-    title: "PC Games",
-    image: "/images/services/pc.png",
-  },
-  {
-    title: "Mobile Games",
-    image: "/images/services/mobile.png",
-  },
+  { title: "VR Games", image: "/images/services/vr.png" },
+  { title: "AR Games", image: "/images/services/ar.png" },
+  { title: "XR Games", image: "/images/services/xr.png" },
+  { title: "PC Games", image: "/images/services/pc.png" },
+  { title: "Mobile Games", image: "/images/services/mobile.png" },
 ];
 
 export default function Services() {
-  return (
-    <section
-      id="services"
-      className="relative overflow-hidden px-6 py-32"
-    >
-      {/* Background blur layer */}
-      <div className="pointer-events-none absolute inset-0 z-0 bg-slate-950/20 backdrop-blur-[8px]" />
+  const trackRef = useRef<HTMLDivElement>(null);
+  const x = useRef(0);
+  const velocity = useRef(1.2);
+  const isMouseDown = useRef(false);
 
+  useEffect(() => {
+    const handleDown = (e: MouseEvent) => {
+      if (e.button === 0) isMouseDown.current = true;
+    };
+
+    const handleUp = () => {
+      isMouseDown.current = false;
+    };
+
+    window.addEventListener("mousedown", handleDown);
+    window.addEventListener("mouseup", handleUp);
+
+    return () => {
+      window.removeEventListener("mousedown", handleDown);
+      window.removeEventListener("mouseup", handleUp);
+    };
+  }, []);
+
+  useAnimationFrame((_, delta) => {
+    const targetVel = isMouseDown.current ? 12 : 1.2;
+    velocity.current += (targetVel - velocity.current) * 0.08;
+
+    x.current -= velocity.current * (delta / 16);
+
+    if (trackRef.current) {
+      const firstCard = trackRef.current.children[0] as HTMLElement;
+      const cardWidth = firstCard.offsetWidth + 24;
+      const totalWidth = cardWidth * services.length;
+
+      if (x.current <= -totalWidth) {
+        x.current += totalWidth;
+      }
+
+      trackRef.current.style.transform = `translateX(${x.current}px)`;
+    }
+  });
+
+  const repeated = [...services, ...services];
+
+  return (
+    <section id="services" className="relative overflow-hidden py-32">
+      {/* TITLE */}
       <motion.div
         initial={{ opacity: 0, y: 34 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="relative z-10 mx-auto max-w-[1600px]"
+        className="relative z-10 mx-auto mb-16 max-w-[1600px] px-6 text-center"
       >
-        {/* Title */}
-        <div className="text-center">
-          <p className="mb-4 text-sm uppercase tracking-[0.35em] text-cyan-300/70">
-            Services
-          </p>
+        <p className="mb-4 text-sm uppercase tracking-[0.35em] text-cyan-300/70">
+          Services
+        </p>
 
-          <h2 className="brand-font text-4xl text-white md:text-6xl">
-            What We Build
-          </h2>
-        </div>
+        <h2 className="brand-font text-4xl text-white md:text-6xl">
+          What We Build
+        </h2>
+      </motion.div>
 
-        {/* Cards */}
-        <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {services.map((service, i) => (
-            <motion.div
-              key={service.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              viewport={{ once: true }}
-              className="group relative overflow-hidden rounded-[28px] border border-white/10"
+      {/* CAROUSEL */}
+      <div className="mx-auto w-full max-w-[1400px] overflow-hidden px-6 py-10">
+        <div ref={trackRef} className="flex gap-6">
+          {repeated.map((service, i) => (
+            <div
+              key={i}
+              className="relative aspect-square shrink-0 basis-[calc((100%-96px)/5)] overflow-visible"
             >
-              {/* IMAGE */}
-              <div className="relative h-[240px] w-full">
+              {/* THIS is the fix */}
+              <div className="group relative h-full w-full rounded-[20px] border border-white/10 overflow-hidden transition-transform duration-500 ease-out hover:scale-105 hover:z-20">
+
                 <Image
                   src={service.image}
                   alt={service.title}
                   fill
-                  className="object-contain transition duration-500 group-hover:scale-105"
+                  sizes="280px"
+                  priority={i < 5}
+                  className="object-cover"
                 />
+
+                {/* hover glow */}
+                <div className="pointer-events-none absolute inset-0 bg-cyan-400/0 transition duration-500 group-hover:bg-cyan-400/10" />
               </div>
-
-              {/* OVERLAY */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-
-              {/* HOVER GLOW */}
-              <div className="absolute inset-0 bg-cyan-400/0 transition duration-500 group-hover:bg-cyan-400/10" />
-
-              {/* TEXT */}
-              <div className="absolute bottom-6 left-6 right-6 text-center">
-                <p className="text-sm uppercase tracking-[0.3em] text-cyan-300/85">
-                  {service.title}
-                </p>
-              </div>
-            </motion.div>
+            </div>
           ))}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

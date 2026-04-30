@@ -16,6 +16,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "OneLight Interactive",
   description: "Immersive interactive worlds across VR, AR, PC, and mobile.",
+  icons: {
+    icon: "/images/logo.png",
+  },
 };
 
 export default function RootLayout({

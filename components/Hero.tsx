@@ -104,7 +104,7 @@ export default function Hero() {
           className="relative mx-auto inline-block w-fit"
         >
           {/* Base text */}
-          <h1 className="brand-font relative z-10 text-[clamp(3.5rem,10vw,10rem)] font-semibold uppercase leading-[0.95] tracking-[0.04em] text-sky-300/75">
+          <h1 className="brand-font relative z-10 text-[clamp(2.5rem,10vw,10rem)] font-semibold uppercase leading-[0.95] tracking-[0.04em] text-sky-300/75 sm:text-[clamp(3.5rem,10vw,10rem)]">
             Build Your Light
           </h1>
 
@@ -122,7 +122,7 @@ export default function Hero() {
           {/* ONLY the hovered radius inside the letters lights up */}
           <h1
             aria-hidden="true"
-            className="pointer-events-none brand-font absolute left-0 top-0 z-20 w-full whitespace-nowrap text-[clamp(3.5rem,10vw,10rem)] font-semibold uppercase leading-[0.95] tracking-[0.04em] text-transparent"
+            className="pointer-events-none brand-font absolute left-0 top-0 z-20 w-full text-[clamp(2.5rem,10vw,10rem)] font-semibold uppercase leading-[0.95] tracking-[0.04em] text-transparent sm:text-[clamp(3.5rem,10vw,10rem)]"
             style={{
               opacity: isHoveringText ? 1 : 0,
               backgroundImage: `radial-gradient(circle 95px at ${mouseX}% ${mouseY}%,
@@ -143,7 +143,7 @@ export default function Hero() {
           {/* Charge glow over full text while holding mouse anywhere */}
           <h1
             aria-hidden="true"
-            className="pointer-events-none brand-font absolute left-0 top-0 z-30 w-full whitespace-nowrap text-[clamp(3.5rem,10vw,10rem)] font-semibold uppercase leading-[0.95] tracking-[0.04em] text-transparent"
+            className="pointer-events-none brand-font absolute left-0 top-0 z-30 w-full text-[clamp(2.5rem,10vw,10rem)] font-semibold uppercase leading-[0.95] tracking-[0.04em] text-transparent sm:text-[clamp(3.5rem,10vw,10rem)]"
             style={{
               opacity: charge,
               backgroundImage:

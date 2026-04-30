@@ -4,12 +4,14 @@ import { motion } from "framer-motion";
 import { FormEvent, useState } from "react";
 
 type FormState = {
+  messageType: string;
   name: string;
   email: string;
   message: string;
 };
 
 const initialState: FormState = {
+  messageType: "",
   name: "",
   email: "",
   message: "",
@@ -25,6 +27,10 @@ export default function Contact() {
   const [success, setSuccess] = useState("");
 
   const validate = () => {
+    if (!form.messageType) {
+      return "Please select what your message is about.";
+    }
+
     if (!nameRegex.test(form.name.trim())) {
       return "Please enter a valid name.";
     }
@@ -60,6 +66,7 @@ export default function Contact() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          messageType: form.messageType,
           name: form.name.trim(),
           email: form.email.trim(),
           message: form.message.trim(),
@@ -88,7 +95,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative overflow-hidden px-6 py-32">
-      <div className="pointer-events-none absolute inset-0 z-0 bg-slate-950/20 backdrop-blur-[8px]" />
 
       <motion.div
         initial={{ opacity: 0, y: 34 }}
@@ -103,7 +109,7 @@ export default function Contact() {
           </p>
 
           <h2 className="brand-font text-4xl text-white md:text-6xl">
-            Start Your Project
+            Contact Us Form
           </h2>
         </div>
 
@@ -115,6 +121,37 @@ export default function Contact() {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="mt-14 rounded-[28px] border border-white/10 bg-white/5 p-8 backdrop-blur-sm sm:p-10"
         >
+          <div className="mb-5">
+            <label className="mb-2 block text-xs uppercase tracking-[0.28em] text-cyan-300/75">
+              What is your message about?
+            </label>
+            <div className="relative">
+              <select
+                required
+                value={form.messageType}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, messageType: e.target.value }))
+                }
+                className="w-full appearance-none rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-white outline-none transition focus:border-cyan-400/40"
+              >
+                <option value="" disabled hidden className="text-slate-500">
+                  Select a category...
+                </option>
+                <option value="General Inquiry" className="bg-slate-900 text-white">General Inquiry</option>
+                <option value="Help / Support" className="bg-slate-900 text-white">Help / Support</option>
+                <option value="Game Pitch" className="bg-slate-900 text-white">Game Pitch</option>
+                <option value="Business / Partnership Inquiry" className="bg-slate-900 text-white">Business / Partnership Inquiry</option>
+                <option value="Feedback / Suggestions" className="bg-slate-900 text-white">Feedback / Suggestions</option>
+                <option value="Bug Report" className="bg-slate-900 text-white">Bug Report</option>
+              </select>
+              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
               <label className="mb-2 block text-xs uppercase tracking-[0.28em] text-cyan-300/75">
@@ -166,11 +203,23 @@ export default function Contact() {
           </div>
 
           {error ? (
-            <p className="mt-5 text-center text-sm text-red-300">{error}</p>
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-center text-sm font-medium text-red-300"
+            >
+              {error}
+            </motion.div>
           ) : null}
 
           {success ? (
-            <p className="mt-5 text-center text-sm text-cyan-300">{success}</p>
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 rounded-xl border border-cyan-500/20 bg-cyan-500/10 p-4 text-center text-sm font-medium text-cyan-300"
+            >
+              {success}
+            </motion.div>
           ) : null}
 
           <div className="mt-8 flex justify-center">

@@ -3,9 +3,9 @@ import nodemailer from "nodemailer";
 
 export async function POST(request: Request) {
   try {
-    const { name, email, message } = await request.json();
+    const { messageType, name, email, message } = await request.json();
 
-    if (!name || !email || !message) {
+    if (!messageType || !name || !email || !message) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
@@ -23,8 +23,9 @@ export async function POST(request: Request) {
       from: `"OneLight Interactive" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_TO_EMAIL,
       replyTo: email,
-      subject: `New message from ${name}`,
-      text: `Name: ${name}
+      subject: `[${messageType}] New message from ${name}`,
+      text: `Category: ${messageType}
+Name: ${name}
 Email: ${email}
 
 Message:

@@ -6,7 +6,6 @@ import Image from "next/image";
 export default function Games() {
   return (
     <section id="games" className="relative overflow-hidden px-6 py-32">
-      <div className="pointer-events-none absolute inset-0 z-0 bg-slate-950/20 backdrop-blur-[8px]" />
 
       <motion.div
         initial={{ opacity: 0, y: 34 }}
@@ -27,34 +26,34 @@ export default function Games() {
 
         {/* GAME CARD */}
         <motion.a
-        href="#"
-        initial={{ opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, delay: 0.1 }}
-        className="group mx-auto mt-16 block max-w-3xl overflow-hidden rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-sm transition hover:border-cyan-400/30"
+          href="/cleaning-simulator"
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          className="group mx-auto mt-16 block max-w-3xl overflow-hidden rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-sm transition hover:border-cyan-400/30"
         >
-        {/* IMAGE */}
-        <div className="relative w-full overflow-hidden">
+          {/* IMAGE */}
+          <div className="relative w-full overflow-hidden">
             <Image
-            src="/images/Game1.png"
-            alt="Ultimate Cleaning Simulator"
-            width={1536}
-            height={1024}
-            className="h-auto w-full object-cover transition duration-700 group-hover:scale-[1.02]"
-            priority
+              src="/images/Gamer.png"
+              alt="Cleaning Simulator"
+              width={1536}
+              height={1024}
+              className="h-auto w-full object-cover transition duration-700 group-hover:scale-[1.02]"
+              priority
             />
 
             {/* softer fade */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent" />
-        </div>
+          </div>
 
-        {/* TITLE */}
-        <div className="py-6 text-center">
+          {/* TITLE */}
+          <div className="py-6 text-center">
             <h3 className="brand-font text-2xl text-white md:text-3xl">
-            Ultimate Cleaning Simulator
+              Cleaning Simulator
             </h3>
-        </div>
+          </div>
         </motion.a>
       </motion.div>
     </section>

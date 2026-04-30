@@ -6,10 +6,8 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden px-6 py-32 text-center"
+      className="relative overflow-hidden px-6 py-32"
     >
-      <div className="pointer-events-none absolute inset-0 z-0 bg-slate-950/20 backdrop-blur-[8px]" />
-
       <motion.div
         initial={{ opacity: 0, y: 34 }}
         whileInView={{ opacity: 1, y: 0 }}

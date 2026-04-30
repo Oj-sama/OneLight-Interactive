@@ -8,7 +8,6 @@ export default function LocationHours() {
 
   return (
     <section className="relative overflow-hidden px-6 py-32">
-      <div className="pointer-events-none absolute inset-0 z-0 bg-slate-950/20 backdrop-blur-[8px]" />
 
       <motion.div
         initial={{ opacity: 0, y: 34 }}
