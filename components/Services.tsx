@@ -5,11 +5,11 @@ import { motion, useAnimationFrame } from "framer-motion";
 import Image from "next/image";
 
 const services = [
-  { title: "VR Games", image: "/images/services/vr.png" },
-  { title: "AR Games", image: "/images/services/ar.png" },
-  { title: "XR Games", image: "/images/services/xr.png" },
-  { title: "PC Games", image: "/images/services/pc.png" },
-  { title: "Mobile Games", image: "/images/services/mobile.png" },
+  { title: "VR Games", image: "/images/services/vr1.png" },
+  { title: "AR Games", image: "/images/services/ar1.png" },
+  { title: "XR Games", image: "/images/services/xr1.png" },
+  { title: "PC Games", image: "/images/services/pc1.png" },
+  { title: "Mobile Games", image: "/images/services/mobile1.png" },
 ];
 
 export default function Services() {
