@@ -4,12 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
-/**
- * A Minimalist, Premium Loading Screen.
- * Focuses on smooth, soft lighting and a "Light Portal" aesthetic.
- * Replaces chaotic particle physics with elegant, fluid motion.
- */
-
 export default function LoadingScreen() {
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
@@ -28,13 +22,11 @@ export default function LoadingScreen() {
   useEffect(() => {
     if (!mounted) return;
 
-    // Progress Logic
     const interval = setInterval(() => {
       const rem = 100 - pctRef.current;
       const spd = rem > 50 ? 1.5 : rem > 20 ? 0.8 : 0.3;
       tgtRef.current = Math.min(100, tgtRef.current + spd);
       
-      // Smooth lerp
       pctRef.current += (tgtRef.current - pctRef.current) * 0.15;
       const rounded = Math.round(pctRef.current);
       
@@ -66,7 +58,7 @@ export default function LoadingScreen() {
           }}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#020617] overflow-hidden"
         >
-          {/* Cinematic Starfield (Deep Space Texture) - Disabled on Mobile */}
+          {/* Starfield - Disabled on Mobile */}
           {!isMobile && (
             <div className="absolute inset-0 opacity-40 pointer-events-none">
               {Array.from({ length: 120 }).map((_, i) => {
@@ -102,14 +94,13 @@ export default function LoadingScreen() {
           {/* Central UI */}
           <div className="relative flex flex-col items-center">
             
-            {/* Logo Section (Center of all energy) */}
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
               className="relative flex items-center justify-center"
             >
-              {/* Ambient Background Glow (Now centered with logo) */}
+              {/* Background Glow */}
               <motion.div 
                 className="absolute w-[800px] h-[800px] rounded-full pointer-events-none"
                 animate={{
@@ -120,9 +111,8 @@ export default function LoadingScreen() {
                 style={{ background: "radial-gradient(circle, rgba(125,211,252,0.15) 0%, transparent 70%)" }}
               />
 
-              {/* Sharp Edgy Rings (Stronger & Perfectly Centered) */}
+              {/* Rings */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                {/* Ring 1: Solid & Fast */}
                 <motion.div
                   className="absolute rounded-full border-4 border-white/60"
                   initial={{ width: 256, height: 256, opacity: 0 }}
@@ -131,14 +121,8 @@ export default function LoadingScreen() {
                     height: [256, 1600], 
                     opacity: [0, 0.8, 0],
                   }}
-                  transition={{ 
-                    duration: 3, 
-                    repeat: Infinity, 
-                    ease: [0.16, 1, 0.3, 1] 
-                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: [0.16, 1, 0.3, 1] }}
                 />
-
-                {/* Ring 2: Dashed & Rotating (Edgy) */}
                 <motion.div
                   className="absolute rounded-full border-[3px] border-dashed border-cyan-400/60"
                   initial={{ width: 256, height: 256, opacity: 0, rotate: 0 }}
@@ -148,15 +132,8 @@ export default function LoadingScreen() {
                     opacity: [0, 0.5, 0],
                     rotate: 120
                   }}
-                  transition={{ 
-                    duration: 4.5, 
-                    repeat: Infinity, 
-                    delay: 1,
-                    ease: [0.16, 1, 0.3, 1] 
-                  }}
+                  transition={{ duration: 4.5, repeat: Infinity, delay: 1, ease: [0.16, 1, 0.3, 1] }}
                 />
-
-                {/* Ring 3: Solid & Wide */}
                 <motion.div
                   className="absolute rounded-full border-2 border-white/30"
                   initial={{ width: 256, height: 256, opacity: 0 }}
@@ -165,25 +142,18 @@ export default function LoadingScreen() {
                     height: [256, 2400], 
                     opacity: [0, 0.4, 0],
                   }}
-                  transition={{ 
-                    duration: 6, 
-                    repeat: Infinity, 
-                    delay: 2.2,
-                    ease: [0.16, 1, 0.3, 1] 
-                  }}
+                  transition={{ duration: 6, repeat: Infinity, delay: 2.2, ease: [0.16, 1, 0.3, 1] }}
                 />
               </div>
 
-              {/* Outer soft decorative ring (Matches ripple start size) */}
+              {/* Static Ring */}
               <motion.div 
                 className="absolute w-64 h-64 rounded-full border border-white/[0.1]"
-                animate={{ 
-                  rotate: 360,
-                }}
+                animate={{ rotate: 360 }}
                 transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
               />
 
-              {/* Logo with soft glow */}
+              {/* Logo */}
               <motion.div
                 className="relative z-10 p-8 rounded-full"
                 animate={{
@@ -207,7 +177,7 @@ export default function LoadingScreen() {
               </motion.div>
             </motion.div>
 
-            {/* Percentage Text */}
+            {/* Percentage */}
             <motion.div 
               className="mt-12 flex flex-col items-center gap-2"
               initial={{ opacity: 0 }}
@@ -232,7 +202,7 @@ export default function LoadingScreen() {
             </motion.div>
           </div>
 
-          {/* Bottom decorative line */}
+          {/* Decorative line */}
           <motion.div 
             className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-500/10 to-transparent"
             initial={{ scaleX: 0 }}
