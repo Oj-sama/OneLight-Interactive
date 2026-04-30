@@ -8,10 +8,10 @@ export default function Games() {
     <section id="games" className="relative overflow-hidden px-6 py-32">
 
       <motion.div
-        initial={{ opacity: 0, y: 34 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8 }}
+        initial={{ opacity: 0, y: 40, scale: 0.98 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.9, ease: "easeOut" }}
         className="relative z-10 mx-auto w-full max-w-[1920px]"
       >
         <div className="text-center">
@@ -42,6 +42,7 @@ export default function Games() {
               height={1024}
               className="h-auto w-full object-cover transition duration-700 group-hover:scale-[1.02]"
               priority
+              draggable={false}
             />
 
             {/* softer fade */}

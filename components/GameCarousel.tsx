@@ -35,7 +35,7 @@ export default function GameCarousel() {
       <div className="flex items-center justify-center gap-4 sm:gap-8">
         {/* Previous Image Preview */}
         <div 
-          className="relative hidden sm:block h-[200px] w-[15%] sm:h-[300px] sm:w-[20%] opacity-40 cursor-pointer transition duration-300 hover:opacity-70"
+          className="relative hidden sm:block h-[200px] w-[15%] sm:h-[300px] sm:w-[20%] opacity-40 cursor-pointer transition duration-300 hover:opacity-70 interactive"
           onClick={prevSlide}
         >
           <Image
@@ -43,11 +43,12 @@ export default function GameCarousel() {
             alt="Previous screenshot"
             fill
             className="object-cover rounded-2xl"
+            draggable={false}
           />
         </div>
 
         {/* Current Main Image */}
-        <div className="relative h-[250px] w-[90%] sm:h-[400px] md:h-[500px] sm:w-[60%] lg:w-[50%] shadow-2xl shadow-cyan-900/20">
+        <div className="relative h-[250px] w-[90%] sm:h-[400px] md:h-[500px] sm:w-[60%] lg:w-[50%] shadow-2xl shadow-cyan-900/20 interactive">
           <AnimatePresence mode="popLayout">
             <motion.div
               key={currentIndex}
@@ -70,7 +71,7 @@ export default function GameCarousel() {
 
         {/* Next Image Preview */}
         <div 
-          className="relative hidden sm:block h-[200px] w-[15%] sm:h-[300px] sm:w-[20%] opacity-40 cursor-pointer transition duration-300 hover:opacity-70"
+          className="relative hidden sm:block h-[200px] w-[15%] sm:h-[300px] sm:w-[20%] opacity-40 cursor-pointer transition duration-300 hover:opacity-70 interactive"
           onClick={nextSlide}
         >
           <Image
@@ -109,7 +110,7 @@ export default function GameCarousel() {
           <button
             key={idx}
             onClick={() => setCurrentIndex(idx)}
-            className={`h-2 rounded-full transition-all duration-300 ${
+            className={`h-2 rounded-full transition-all duration-300 interactive ${
               idx === currentIndex ? "w-8 bg-cyan-400" : "w-2 bg-white/20 hover:bg-white/50"
             }`}
             aria-label={`Go to slide ${idx + 1}`}

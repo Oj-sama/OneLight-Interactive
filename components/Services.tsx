@@ -20,7 +20,25 @@ export default function Services() {
 
   useEffect(() => {
     const handleDown = (e: MouseEvent) => {
-      if (e.button === 0) isMouseDown.current = true;
+      if (e.button !== 0) return;
+
+      // Only speed up if clicking empty space (not on cards, forms, buttons, etc.)
+      const target = e.target as HTMLElement;
+      const isInteractive =
+        target.closest("button") ||
+        target.closest("a") ||
+        target.closest("input") ||
+        target.closest("textarea") ||
+        target.closest("select") ||
+        target.closest("form") ||
+        target.closest("header") ||
+        target.closest(".group") ||
+        target.closest('[class*="backdrop-blur"]') ||
+        target.closest('[role="button"]');
+
+      if (isInteractive) return;
+
+      isMouseDown.current = true;
     };
 
     const handleUp = () => {
@@ -29,10 +47,12 @@ export default function Services() {
 
     window.addEventListener("mousedown", handleDown);
     window.addEventListener("mouseup", handleUp);
+    window.addEventListener("dragstart", (e) => e.preventDefault());
 
     return () => {
       window.removeEventListener("mousedown", handleDown);
       window.removeEventListener("mouseup", handleUp);
+      window.removeEventListener("dragstart", (e) => e.preventDefault());
     };
   }, []);
 
@@ -94,6 +114,7 @@ export default function Services() {
                   sizes="280px"
                   priority={i < 5}
                   className="object-cover"
+                  draggable={false}
                 />
 
                 {/* hover glow */}

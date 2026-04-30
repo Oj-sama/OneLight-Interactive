@@ -9,10 +9,10 @@ export default function About() {
       className="relative overflow-hidden px-6 py-32"
     >
       <motion.div
-        initial={{ opacity: 0, y: 34 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8 }}
+        initial={{ opacity: 0, y: 40, scale: 0.98 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.9, ease: "easeOut" }}
         className="relative z-10 mx-auto max-w-4xl"
       >
         <p className="mb-4 text-sm uppercase tracking-[0.35em] text-cyan-300/70">

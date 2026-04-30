@@ -212,7 +212,25 @@ export default function ParticleField() {
       };
 
       const onMouseDown = (e: MouseEvent) => {
+        // Only trigger on left click
         if (e.button !== 0) return;
+
+        // --- IGNORE INTERACTIVE ELEMENTS ---
+        const target = e.target as HTMLElement;
+        const isInteractive =
+          target.closest("button") ||
+          target.closest("a") ||
+          target.closest("input") ||
+          target.closest("textarea") ||
+          target.closest("select") ||
+          target.closest("form") || // Exclude entire contact/newsletter forms
+          target.closest("header") || // Exclude navbar
+          target.closest(".group") || // Exclude all cards (Services, Games)
+          target.closest('[class*="backdrop-blur"]') || // Exclude any blurred containers (sm, md, xl)
+          target.closest('[role="button"]') ||
+          target.closest(".interactive");
+
+        if (isInteractive) return;
 
         mouseRef.current.x = e.clientX;
         mouseRef.current.y = e.clientY;
@@ -223,6 +241,21 @@ export default function ParticleField() {
 
       const onMouseUp = (e: MouseEvent) => {
         if (e.button !== 0) return;
+
+        const target = e.target as HTMLElement;
+        const isInteractive =
+          target.closest("form") ||
+          target.closest("header") ||
+          target.closest(".group") ||
+          target.closest('[class*="backdrop-blur"]') ||
+          target.closest("button") ||
+          target.closest("a");
+
+        if (isInteractive) {
+          mouseRef.current.pressed = false;
+          mouseRef.current.pullRadius = 0;
+          return;
+        }
 
         mouseRef.current.x = e.clientX;
         mouseRef.current.y = e.clientY;

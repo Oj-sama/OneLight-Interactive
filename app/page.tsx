@@ -8,10 +8,15 @@ import ForumPlaceholder from "@/components/ForumPlaceholder";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ParticleField from "@/components/ParticleField";
+import LoadingScreen from "@/components/LoadingScreen";
+import ScrollProgress from "@/components/ScrollProgress";
 
 export default function Home() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-slate-950 text-white">
+      <LoadingScreen />
+      <ScrollProgress />
+      
       <div className="fixed inset-0 z-0">
         <ParticleField />
       </div>
