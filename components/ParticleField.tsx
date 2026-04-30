@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Application, Container, Graphics } from "pixi.js";
 
 type Particle = {
@@ -23,6 +23,8 @@ type Particle = {
 
 export default function ParticleField() {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
   const mouseRef = useRef({
     x: 0,
     y: 0,
@@ -34,6 +36,11 @@ export default function ParticleField() {
   });
 
   useEffect(() => {
+    setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
     const host = containerRef.current;
     if (!host) return;
 
@@ -409,6 +416,8 @@ export default function ParticleField() {
       }
     };
   }, []);
+
+  if (isMobile) return null;
 
   return (
     <div

@@ -15,12 +15,14 @@ export default function LoadingScreen() {
   const [mounted, setMounted] = useState(false);
   const [percent, setPercent] = useState(0);
   const [done, setDone] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const pctRef = useRef(0);
   const tgtRef = useRef(0);
 
   useEffect(() => {
     setMounted(true);
+    setIsMobile(window.matchMedia("(max-width: 768px)").matches);
   }, []);
 
   useEffect(() => {
@@ -64,36 +66,38 @@ export default function LoadingScreen() {
           }}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#020617] overflow-hidden"
         >
-          {/* Cinematic Starfield (Deep Space Texture) */}
-          <div className="absolute inset-0 opacity-40 pointer-events-none">
-            {Array.from({ length: 120 }).map((_, i) => {
-              const size = 0.5 + Math.random() * 1.2;
-              const hasGlow = Math.random() > 0.7;
-              return (
-                <motion.div
-                  key={i}
-                  className="absolute bg-white rounded-full"
-                  style={{
-                    width: size,
-                    height: size,
-                    top: `${Math.random() * 100}%`,
-                    left: `${Math.random() * 100}%`,
-                    opacity: 0.1 + Math.random() * 0.6,
-                    boxShadow: hasGlow ? "0 0 4px rgba(255,255,255,0.8)" : "none",
-                  }}
-                  animate={{
-                    opacity: [0.2, 0.8, 0.2],
-                    scale: hasGlow ? [1, 1.3, 1] : [1, 1, 1],
-                  }}
-                  transition={{
-                    duration: 3 + Math.random() * 4,
-                    repeat: Infinity,
-                    delay: Math.random() * 5,
-                  }}
-                />
-              );
-            })}
-          </div>
+          {/* Cinematic Starfield (Deep Space Texture) - Disabled on Mobile */}
+          {!isMobile && (
+            <div className="absolute inset-0 opacity-40 pointer-events-none">
+              {Array.from({ length: 120 }).map((_, i) => {
+                const size = 0.5 + Math.random() * 1.2;
+                const hasGlow = Math.random() > 0.7;
+                return (
+                  <motion.div
+                    key={i}
+                    className="absolute bg-white rounded-full"
+                    style={{
+                      width: size,
+                      height: size,
+                      top: `${Math.random() * 100}%`,
+                      left: `${Math.random() * 100}%`,
+                      opacity: 0.1 + Math.random() * 0.6,
+                      boxShadow: hasGlow ? "0 0 4px rgba(255,255,255,0.8)" : "none",
+                    }}
+                    animate={{
+                      opacity: [0.2, 0.8, 0.2],
+                      scale: hasGlow ? [1, 1.3, 1] : [1, 1, 1],
+                    }}
+                    transition={{
+                      duration: 3 + Math.random() * 4,
+                      repeat: Infinity,
+                      delay: Math.random() * 5,
+                    }}
+                  />
+                );
+              })}
+            </div>
+          )}
 
           {/* Central UI */}
           <div className="relative flex flex-col items-center">
