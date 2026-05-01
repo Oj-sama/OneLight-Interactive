@@ -38,7 +38,9 @@ export default function CleaningSimulatorPage() {
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-6 pointer-events-auto">
               <a
-                href="#"
+                href="https://www.meta.com/experiences/cleaning-simulator-vr/26409028195374123"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group relative overflow-hidden rounded-full border border-cyan-400/40 bg-cyan-400/10 px-8 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-cyan-100 transition hover:border-cyan-400/80"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-300/25 to-transparent translate-x-[-120%] transition duration-700 group-hover:translate-x-[120%]" />
